@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgre:
+    image: postgres:12.17
+    ports:
+      - 5432:5432
+    environment:
+       POSTGRES_PASSWORD: Pg123
+       POSTEGRES_USER: kubenews
+       POSTEGRES_DB: kubenws
+    volumes:
+    - postgre_docker_vol:/var/lib/postgresql/data
+    networks:
+      - kube_news_net
+  
+  kube_news: 
+    image: kubedevio/kube-news:v1  
+    ports:
+      -8080:8080
+    networks:
+      - kube_news_net     
+    environment:
+      - DB_PASSWORD: Pg123
+        DB_USERNAME: kubenews
+        DB_DATABASE: kubenws
+        DB_HOST:  postgre       
+
+
+volumes:
+  postgre_docker_vol: 
